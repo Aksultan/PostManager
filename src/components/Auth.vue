@@ -14,7 +14,7 @@
     >
         <b-form-input id="type-password" type="password" v-model="password"></b-form-input>    
     </b-form-group>        
-     <b-button variant="outline-primary" v-on:click="authUser">Login</b-button>
+     <b-button variant="outline-primary" @click="authUser">Login</b-button>
     </div>
   </div>
 </template>

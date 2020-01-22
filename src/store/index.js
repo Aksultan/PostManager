@@ -7,7 +7,8 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         logged_in: false,
-        posts: []
+        posts: [],
+        users: []
     },
 
     getters:{
@@ -21,8 +22,18 @@ export const store = new Vuex.Store({
             router.push("/posts")
         },
 
-        SET_POSTS : (state, payload) => {
-            state.posts.push(payload)
+        SET_POSTS : (state, payload) => {   
+            state.users.map(user=>{
+                payload.map(post=>{
+                    if(user.id === post.userId && !state.posts.some(x => post.id === x.id)){
+                        state.posts.push({...user, ...post})
+                    }
+                })
+            })
+        },
+
+        SET_USERS : (state, payload) => {
+            state.users = payload
         },
 
         LOG_OUT : (state) => {
@@ -44,11 +55,21 @@ export const store = new Vuex.Store({
         GET_POSTS : async (context) => {
             const response = await fetch('https://jsonplaceholder.typicode.com/posts')
             const json = await response.json()
-            context.commit('POSTS', json)
+            const response2 = await fetch('https://jsonplaceholder.typicode.com/users')
+            const json2 = await response2.json()
+            context.commit('SET_USERS', json2)
+            context.commit('SET_POSTS', json)
         },
-
+        
         LOG_OUT : (context) => {
             context.commit('LOG_OUT')
+        },
+
+        DELETE_POST :  (payload) => {
+            console.log(payload)
+             fetch('https://jsonplaceholder.typicode.com/posts/'+ 1, {
+                method: 'DELETE'
+            })
         }
     }
 
