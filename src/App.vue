@@ -1,27 +1,21 @@
 <template>
   <div id="app">
-    <Posts/>
+    <Auth/>
   </div>
 </template>
 
 <script>
-import Posts from './components/Posts.vue'
+import '../src/style/app.scss'
+
+// import Posts from './components/Posts.vue'
+import Auth from './components/Auth.vue'
+
 
 export default {
   name: 'app',
   components: {
-    Posts
+    // Posts,
+    Auth
   }
 }
 </script>
-
-<style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

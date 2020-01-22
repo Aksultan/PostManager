@@ -1,0 +1,17 @@
+@import 'node_modules/bootstrap/scss/bootstrap';
+@import 'node_modules/bootstrap-vue/src/index.scss';
+
+$back-color: #ccc;
+$font-family:'Segoe UI';
+
+html, body{
+    height:100%;
+}
+
+body{
+    background-color: $back-color;
+}
+
+#app{
+    height:100%;
+}
