@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="card" v-for="(comment, index) in COMMENTS" :key="index">
+        <div class="card" v-for="(comment, index) in comments" :key="index">
             <b-row>
                 <b-col>
                     <router-link to="">
@@ -17,24 +17,14 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
     name: 'Comments',
-    props: ['postId'],
+    props: ['comments'],
 
     data(){
         return{
             text: ''
         }
-    },
-
-    mounted(){
-        this.$store.dispatch('GET_COMMENTS', this.$route.params.id)
-    },
-
-    computed: {
-        ...mapGetters(['COMMENTS'])
     },
 }
 </script>

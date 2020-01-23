@@ -11,12 +11,18 @@ export const store = new Vuex.Store({
         users: [],
         post: [],
         comments: [],
+        user: [],
+        user_posts: [],
+        user_comments: []
     },
 
     getters:{
         POSTS : state => state.posts,
         POST : state => state.post,
-        COMMENTS : state => state.comments
+        COMMENTS : state => state.comments,
+        USER : state => state.user,
+        USER_POSTS : state => state.user_posts,
+        USER_COMMENTS : state => state.user_comments,
     },
 
     mutations:{
@@ -44,8 +50,7 @@ export const store = new Vuex.Store({
         SET_POST : (state, payload) => {    
             state.posts.filter(post => {
                 if(post.id == payload)
-                    state.post = post
-                
+                    state.post = post  
             })
         },
 
@@ -53,9 +58,32 @@ export const store = new Vuex.Store({
             state.comments = payload
         },
 
+        SET_USER : (state, payload) => {
+            state.user = payload
+        },
+
+        SET_USER_POSTS : (state, payload) => {
+            state.user_posts = []
+            state.posts.map(post => {
+                console.log(post.userId === parseInt(payload))
+                if(post.userId === parseInt(payload) && state.user_posts.length < 5)
+                    state.user_posts.push(post)
+            })
+        },
+
+        SET_USER_COMMENTS : (state, payload) => {
+            state.posts.map(post => {
+                state.comments.map(comment => {
+                    if(post.id === comment.postId && post.userId === parseInt(payload) && !state.user_comments.some(x => comment.id === x.id))
+                        state.user_comments.push(comment)
+                })
+            })
+        },
+
         LOG_OUT : (state) => {
             state.logged_in = false
             localStorage.removeItem('auth-mail')
+            localStorage.removeItem('auth-id')
             router.push("/")
         }
     },
@@ -116,8 +144,21 @@ export const store = new Vuex.Store({
             const response = await fetch('https://jsonplaceholder.typicode.com/comments?postId='+ payload)
             const json = await response.json()
             context.commit('SET_COMMENTS', json)
-        }
+        },
 
+        GET_USER : async (context, payload) => {
+            const response = await fetch('https://jsonplaceholder.typicode.com/users/'+ payload)
+            const json = await response.json()
+            context.commit('SET_USER', json)
+        },
+        
+        GET_USER_RELATED_POSTS : (context, payload) => {
+            context.commit('SET_USER_POSTS', payload)
+        },
+        
+        GET_USER_RELATED_COMMENTS : (context, payload) => {
+            context.commit('SET_USER_COMMENTS', payload)
+        }
         
     }
 

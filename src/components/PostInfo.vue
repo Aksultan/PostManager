@@ -2,7 +2,7 @@
     <div>
         <Navbar/>      
         <Post :posts="[POST]"/>
-        <Comments :postId="POST.id"/>
+        <Comments :comments="COMMENTS"/>
     </div>
 </template>
 <script>
@@ -20,10 +20,14 @@ export default {
     },
     mounted(){
         this.$store.dispatch('GET_POST', this.$route.params.id)
+        this.$store.dispatch('GET_COMMENTS', this.$route.params.id)
     },
 
     computed : {
-        ...mapGetters(['POST'])
+        ...mapGetters([
+            'POST',
+            'COMMENTS'
+        ])
     }
 
 

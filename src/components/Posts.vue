@@ -62,13 +62,13 @@ export default {
   },
 
   methods : {
-     addPost(title, body){
-            return this.$store.dispatch('ADD_POST', {
-                title, 
-                body, 
-                userId : parseInt(localStorage.getItem('auth-id'))
-            })
-        },
+    addPost(title, body){
+      return this.$store.dispatch('ADD_POST', {
+          title, 
+          body, 
+          userId : parseInt(localStorage.getItem('auth-id'))
+      })
+    },
   }
 
 }
