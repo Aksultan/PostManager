@@ -11,8 +11,9 @@
 
     <b-form-group
         label="Enter your password"
+        label-for="password"
     >
-        <b-form-input id="type-password" type="password" v-model="password"></b-form-input>    
+      <b-form-input id="type-password" type="password" v-model="password"></b-form-input>    
     </b-form-group>        
      <b-button variant="outline-primary" @click="authUser">Login</b-button>
     </div>

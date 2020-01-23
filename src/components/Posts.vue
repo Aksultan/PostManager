@@ -2,43 +2,56 @@
   <div>
     <Navbar/>
     <div class="container">
-      <b-row v-for="(post, index) in POSTS" :key="index">
+      <b-row>
         <b-col>
           <div class="card">
-            <div class="header">
-              <a href="" :class="{owner: validateUser(post.email)}">{{post.name}}</a>
-              <div class="toolbar" v-if="validateUser(post.email)">
-                <b-button-group>
-                  <b-button variant="outline-primary">
-                    <b-icon icon="pencil"></b-icon>
-                  </b-button>
-                  <b-button variant="outline-primary" @click="deletePost(post.id)">
-                    <b-icon icon="trash"></b-icon>
-                  </b-button>
-                </b-button-group>
-              </div>
-            </div>
-            <h2>
-              {{post.title}}
-            </h2>
-            <p>{{post.body}}</p>
+            <b-row>
+              <b-col sm="2">
+                 <label for="title">Post title : </label>
+              </b-col>
+              <b-col sm="10">
+                <b-form-input type="text" id="title" v-model="title"></b-form-input>
+              </b-col>
+            </b-row>
+            <br/>
+            <b-row>
+              <b-col sm="2">
+                 <label for="title">Post body : </label>
+              </b-col>
+              <b-col sm="10">
+                <b-form-textarea type="text" id="title" v-model="body"></b-form-textarea>
+              </b-col>
+            </b-row>
+            <br/>
+            <b-button block variant="primary" @click="addPost(title, body)">Add post</b-button>  
           </div>
         </b-col>
       </b-row>
+      <Post :posts="POSTS"/> 
     </div>
   </div>
 </template>
 
 <script>
 import Navbar from './Navbar'
+import Post from './Post'
+
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'Posts',
   components: {
-    Navbar    
+    Navbar,
+    Post    
   },
 
-
+  data(){
+    return {
+      title: '',
+      body: '',
+    }
+  },
+ 
   mounted(){
     this.$store.dispatch('GET_POSTS');
   },
@@ -48,42 +61,15 @@ export default {
     ...mapGetters(['POSTS']),
   },
 
-
   methods : {
-     validateUser(email){
-      return localStorage.getItem('auth-mail') === email
-    },
-    
-    deletePost(id){
-      return this.$store.dispatch('DELETE_POST', id)
-    }
+     addPost(title, body){
+            return this.$store.dispatch('ADD_POST', {
+                title, 
+                body, 
+                userId : parseInt(localStorage.getItem('auth-id'))
+            })
+        },
   }
 
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-  .card{
-    background-color:#fff;
-    margin-top: 20px;
-    padding: 15px;
-  }
-
-  .container{
-    margin-top: 15px;
-  }
-
-  h2{
-    margin-top: 15px;
-  }
-
-  .toolbar{
-    float:right;
-  }
-
-  .owner{
-    font-weight: bold;
-    color: #000;
-  }
-</style>
