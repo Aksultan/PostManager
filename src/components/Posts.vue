@@ -5,23 +5,32 @@
       <b-row>
         <b-col>
           <div class="card">
-            <b-row>
-              <b-col sm="2">
-                 <label for="title">Post title : </label>
-              </b-col>
-              <b-col sm="10">
-                <b-form-input type="text" id="title" v-model="title"></b-form-input>
-              </b-col>
-            </b-row>
+          
+          
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-lg="2"
+              label="Post title :"
+              label-for="title"
+              :invalid-feedback="validateTitle"
+              :state="validateTitle===''?true:false"
+              :description="titleLength.toString()"
+            >
+              <b-form-input type="text" id="title" v-model="title" :state="validateTitle===''?true:false" @change="titleLength?titleLength:''"></b-form-input>
+            </b-form-group>
+              
             <br/>
-            <b-row>
-              <b-col sm="2">
-                 <label for="title">Post body : </label>
-              </b-col>
-              <b-col sm="10">
-                <b-form-textarea type="text" id="title" v-model="body"></b-form-textarea>
-              </b-col>
-            </b-row>
+
+            <b-form-group
+              label-cols-sm="4"
+              label-cols-lg="2"
+              label="Post body :"
+              label-for="body"
+              :invalid-feedback="validateBody"
+              :state="validateBody===''?true:false"
+            >
+              <b-form-textarea type="text" id="body" v-model="body" :state="validateBody===''?true:false"></b-form-textarea>
+            </b-form-group>
             <br/>
             <b-button block variant="primary" @click="addPost(title, body)">Add post</b-button>  
           </div>
@@ -59,16 +68,42 @@ export default {
 
   computed : {
     ...mapGetters(['POSTS']),
+
+    titleLength(){
+      return this.title.length>50?0:50-this.title.length
+    },
+
+    validateTitle(){
+      if(this.title.length > 50)
+        return "max 50 symbols"
+      else if(this.title.length === 0)
+        return "can't be empty"
+      else
+        return ""  
+    },
+
+    validateBody(){
+      if(this.body.length === 0)
+        return "can't be empty"
+      else
+        return ""  
+    }
   },
 
   methods : {
+     
     addPost(title, body){
-      return this.$store.dispatch('ADD_POST', {
-          title, 
-          body, 
-          userId : parseInt(localStorage.getItem('auth-id'))
-      })
+      if(this.validateTitle==="" && this.validateBody==="")
+        return this.$store.dispatch('ADD_POST', {
+            title, 
+            body, 
+            userId : parseInt(localStorage.getItem('auth-id'))
+        })
+      else
+        return alert("Fulfill")  
     },
+    
+    
   }
 
 }
