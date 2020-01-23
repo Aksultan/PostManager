@@ -100,7 +100,7 @@ export default {
             userId : parseInt(localStorage.getItem('auth-id'))
         })
       else
-        return alert("Fulfill")  
+        return alert("Title or body is filled wrong")  
     },
     
     

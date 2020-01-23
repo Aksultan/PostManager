@@ -65,7 +65,6 @@ export const store = new Vuex.Store({
         SET_USER_POSTS : (state, payload) => {
             state.user_posts = []
             state.posts.map(post => {
-                console.log(post.userId === parseInt(payload))
                 if(post.userId === parseInt(payload) && state.user_posts.length < 5)
                     state.user_posts.push(post)
             })
