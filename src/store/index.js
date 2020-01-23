@@ -10,12 +10,13 @@ export const store = new Vuex.Store({
         posts: [],
         users: [],
         post: [],
-        comments: []
+        comments: [],
     },
 
     getters:{
         POSTS : state => state.posts,
-        POST : state => state.post
+        POST : state => state.post,
+        COMMENTS : state => state.comments
     },
 
     mutations:{
@@ -42,8 +43,8 @@ export const store = new Vuex.Store({
 
         SET_POST : (state, payload) => {    
             state.posts.filter(post => {
-                post.id == payload?
-                    state.post = post:console.log(payload)
+                if(post.id == payload)
+                    state.post = post
                 
             })
         },
@@ -82,7 +83,6 @@ export const store = new Vuex.Store({
         },
 
         GET_POST : (context, payload) => {
-            console.log(payload)
             context.commit('SET_POST', payload)
         },
 
@@ -113,11 +113,12 @@ export const store = new Vuex.Store({
         },
 
         GET_COMMENTS : async (context, payload) => {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts/'+payload+'/comments')
+            const response = await fetch('https://jsonplaceholder.typicode.com/comments?postId='+ payload)
             const json = await response.json()
             context.commit('SET_COMMENTS', json)
         }
 
+        
     }
 
 })

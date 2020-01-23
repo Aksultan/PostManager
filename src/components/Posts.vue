@@ -26,9 +26,9 @@
             <b-button block variant="primary" @click="addPost(title, body)">Add post</b-button>  
           </div>
         </b-col>
-      </b-row>
-      <Post :posts="POSTS"/> 
+      </b-row> 
     </div>
+    <Post :posts="POSTS"/>
   </div>
 </template>
 
